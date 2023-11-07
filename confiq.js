@@ -1,5 +1,6 @@
 const addToDo = document.getElementById('addtodo');
 const toDoList = document.querySelector('.todolist');
+const todo_list = [];
 //main 이벤트 추가
 
 //새로운 todo 추가하기
@@ -10,6 +11,7 @@ addToDo.addEventListener('click', () => {
   const adddiv3 = document.createElement('div');
   const addtextinput = document.createElement('input');
   addtextinput.className = 'text-input';
+
   const addckinput = document.createElement('input');
   addckinput.className = 'ck-input';
   addckinput.type = 'checkbox';
@@ -23,6 +25,9 @@ addToDo.addEventListener('click', () => {
   adddiv3.appendChild(addimg2);
   adddiv1.appendChild(adddiv2);
   adddiv1.appendChild(adddiv3);
+  addtextinput.id = todo_list.length;
+  todo_list.push('');
+  console.log(todo_list);
   //체크박스  through line 이벤트 추가
   adddiv1.addEventListener('click', (e) => {
     if (e.target === addckinput && e.target.checked === true) {
@@ -32,10 +37,15 @@ addToDo.addEventListener('click', () => {
       e.target.nextElementSibling.style.textDecoration = 'none';
     }
   });
+  //local
   //엔터 누를시 읽기 모드 변경
   addtextinput.addEventListener('keypress', (e) => {
-    if ((e.keyCode = 13)) {
+    if (e.keyCode === 13) {
       if (e.target.value) {
+        const inputvalue = e.target.value;
+        const inputid = e.target.id;
+        localStorage.setItem(inputid, inputvalue);
+        todo_list[inputid] = inputvalue;
         e.target.readOnly = true;
       } else alert('좋은말할때 뭐라도 입력해라');
     }
@@ -47,7 +57,12 @@ addToDo.addEventListener('click', () => {
   //삭제 이미지 누를시 메모 삭제
   addimg2.addEventListener('click', (e) => {
     e.target.parentNode.parentNode.remove();
+    const input = e.target.parentNode.previousElementSibling.lastChild;
+    const inputid = input.id;
+    localStorage.removeItem(inputid);
+    console.log(toString.inputid);
+    delete todo_list[inputid];
+    console.log(todo_list);
   });
   toDoList.appendChild(adddiv1);
 });
-const local = {};
